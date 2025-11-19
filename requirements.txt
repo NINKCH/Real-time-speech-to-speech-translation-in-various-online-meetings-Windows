@@ -1,0 +1,25 @@
+# 豆包实时同声传译器依赖
+# Python 3.12.7
+
+# WebSocket通信
+websockets>=12.0
+
+# Protobuf协议
+protobuf>=4.21.0
+grpcio-tools>=1.50.0
+
+# 音频处理
+sounddevice>=0.4.6
+numpy>=1.24.0
+
+# GUI界面
+PyQt6>=6.6.0
+
+# 配置管理
+python-dotenv>=1.0.0
+
+# 日志
+# (使用Python内置logging)
+
+# 可选：音频格式支持
+pydub>=0.25.1  # 如果需要支持ogg_opus格式

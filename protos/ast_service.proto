@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package ast;
+
+// 事件类型枚举
+enum EventType {
+    // 客户端事件
+    StartSession = 0;         // 100
+    UpdateConfig = 1;         // 201
+    TaskRequest = 2;          // 200
+    FinishSession = 3;        // 102
+    
+    // 服务端事件
+    SessionStarted = 4;       // 150
+    SourceSubtitleStart = 5;  // 650
+    SourceSubtitleResponse = 6; // 651
+    SourceSubtitleEnd = 7;    // 652
+    TranslationSubtitleStart = 8;  // 653
+    TranslationSubtitleResponse = 9; // 654
+    TranslationSubtitleEnd = 10;   // 655
+    TTSSentenceStart = 11;    // 350
+    TTSResponse = 12;         // 352
+    TTSSentenceEnd = 13;      // 351
+    UsageResponse = 14;       // 154
+    SessionFinished = 15;     // 152
+    SessionFailed = 16;       // 153
+    AudioMuted = 17;          // 250
+}
+
+// 请求元数据
+message RequestMeta {
+    string session_id = 1;
+}
+
+// 用户信息
+message User {
+    string uid = 1;
+    string did = 2;
+    string platform = 3;
+    string sdk_version = 4;
+}
+
+// 语料配置
+message Corpus {
+    repeated string hot_words_list = 1;
+    map<string, string> glossary_list = 2;
+}
+
+// 请求配置
+message Request {
+    string mode = 1;  // s2s 或 s2t
+    string source_language = 2;
+    string target_language = 3;
+    Corpus corpus = 4;
+}
+
+// 音频配置
+message AudioConfig {
+    string format = 1;   // wav, pcm, ogg_opus
+    string codec = 2;    // raw
+    int32 rate = 3;      // 采样率
+    int32 bits = 4;      // 位深
+    int32 channel = 5;   // 声道数
+    bytes data = 6;      // 音频数据
+}
+
+// 计费信息
+message BillingItem {
+    string unit = 1;
+    float quantity = 2;
+}
+
+message Billing {
+    repeated BillingItem items = 1;
+    int32 duration_msec = 2;
+}
+
+// 响应元数据
+message ResponseMeta {
+    string session_id = 1;
+    int32 status_code = 2;
+    string message = 3;
+    Billing billing = 4;
+}
+
+// 客户端请求消息
+message ClientMessage {
+    EventType event = 1;
+    RequestMeta request_meta = 2;
+    User user = 3;
+    Request request = 4;
+    AudioConfig source_audio = 5;
+    AudioConfig target_audio = 6;
+}
+
+// 服务端响应消息
+message ServerMessage {
+    EventType event = 1;
+    ResponseMeta response_meta = 2;
+    string text = 3;
+    bytes data = 4;
+    int32 start_time = 5;
+    int32 end_time = 6;
+    bool spk_chg = 7;
+    int32 muted_duration_ms = 8;
+}
