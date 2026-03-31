@@ -61,7 +61,7 @@ VIRTUAL_AUDIO_CONFIG = {
 GUI_CONFIG = {
     "window_title": "豆包实时同声传译 - Realtime AST Translator",
     "window_size": (900, 700),
-    "font_family": "Microsoft YaHei UI",
+    "font_family": "Segoe UI",
     "font_size": 10,
     "update_interval_ms": 100,  # GUI更新间隔
 }
@@ -86,6 +86,8 @@ LANGUAGES = {
     "de": "德语",
     "ru": "俄语",
     "ar": "阿拉伯语",
+    "pt": "葡萄牙语",
+    "it": "意大利语",
 }
 
 # ==================== 验证配置 ====================

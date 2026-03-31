@@ -101,7 +101,9 @@ class RealtimeTranslatorApp:
     def _init_components(self):
         """初始化各组件"""
         # 创建AST客户端
-        self.ast_client = ASTClient(self.app_key, self.access_key, self.resource_id, debug_mode=self.debug_mode)
+        from config import AST_CONFIG
+        self.ast_client = ASTClient(self.app_key, self.access_key, self.resource_id,
+                                      ws_url=AST_CONFIG["ws_url"], debug_mode=self.debug_mode)
         self.ast_client.set_config(
             mode=self.mode,
             source_language=self.source_language,
@@ -125,12 +127,10 @@ class RealtimeTranslatorApp:
         
         # 创建虚拟音频输出
         if self.mode == "s2s":
-            # 直接指定设备索引16（48000Hz的CABLE Input）
-            # 采样率设为48000Hz匹配设备，避免重采样
             self.virtual_output = VirtualAudioOutput(
+                device_name="CABLE Input",
                 sample_rate=48000,
-                device_index=16,  # 强制使用设备[16] CABLE Input (VB-Audio Virtual Cable) 48000Hz
-                debug_save_audio=self.debug_mode  # 传递调试模式
+                debug_save_audio=self.debug_mode
             )
         
         if self.debug_mode:

@@ -24,7 +24,7 @@ from common.events_pb2 import Type
 class ASTClientProtobuf:
     """AST WebSocket客户端 - 使用Protobuf协议"""
     
-    def __init__(self, app_key: str, access_key: str, resource_id: str = "volc.service_type.10053", debug_mode: bool = False):
+    def __init__(self, app_key: str, access_key: str, resource_id: str = "volc.service_type.10053", ws_url: str = "wss://openspeech.bytedance.com/api/v4/ast/v2/translate", debug_mode: bool = False):
         """
         初始化客户端
         
@@ -32,11 +32,13 @@ class ASTClientProtobuf:
             app_key: API App Key
             access_key: API Access Key
             resource_id: 资源ID
+            ws_url: WebSocket URL
             debug_mode: 是否启用调试模式（打印详细的TTS响应信息）
         """
         self.app_key = app_key
         self.access_key = access_key
         self.resource_id = resource_id
+        self.ws_url = ws_url
         self.debug_mode = debug_mode
         
         # WebSocket连接
@@ -104,7 +106,7 @@ class ASTClientProtobuf:
             是否成功连接
         """
         try:
-            url = "wss://openspeech.bytedance.com/api/v4/ast/v2/translate"
+            url = self.ws_url
             
             # 生成连接ID
             self.conn_id = str(uuid.uuid4())
